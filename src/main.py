@@ -29,7 +29,7 @@ if __name__ == '__main__':
         path= os.path.abspath('.') + '/config.json'
     )                                                   # Load config file
     for single_k in origin_config['k']:                 # Traverse each k num
-        for single_ord in origin_config['ord']:         # Traverse each ord num
+        for single_ord in origin_config['norm_ord']:    # Traverse each ord num
             config = copy.copy(origin_config)           # Copy a new config
             config.update({
                 'k': single_k,

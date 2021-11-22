@@ -52,7 +52,7 @@ class K_means(object):
                 break                                                               # Terminate the while cycle
             else:        
                 mean_vector = mean_vector_new                                       # Update the mean vector
-                if count % 10 == 0:                                                 # Calculate DBI per 10 iteration
+                if count % 5 == 0:                                                 # Calculate DBI per 10 iteration
                     DBI = self.DBI_calculate(cluster, mean_vector, data)            # Calculate DBI number
                     Count_DBI.append((count, DBI))                                  # Save DBI data
                     print(f"--------Iteration: {count}-----DBI: {DBI}--------")     # Log
@@ -79,7 +79,7 @@ class K_means(object):
             for i in range(len(indexes)):                                           
                 for j in range(i+1, len(indexes)):
                     dist_sum += np.linalg.norm(data[indexes[i]] - data[indexes[j]], ord=1)  # Sum of each distance between samples
-            cluster_avg[c] = dist_sum * 2 / (len(indexes) * (len(indexes) - 1))     # Calculate Avg(C_i)
+            cluster_avg[c] = dist_sum * 2 / (len(indexes) * (len(indexes) - 1) + 1e-6)     # Calculate Avg(C_i)
 
         DBI = 0.                                                                    
         for c in range(len(cluster)):                                               # Rollout each cluster
