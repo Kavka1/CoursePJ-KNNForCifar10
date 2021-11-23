@@ -20,7 +20,7 @@ class K_means(object):
         self.cluster = [[] for _ in range(k)]       # Save the index of images for each cluster
         self.mean_vector = [0. for _ in range(k)]   # Save the mean vector for each cluster
 
-    def train(self, data: np.array) -> List[Tuple[int, float]]:
+    def train(self, data: np.array, DBI_calculate: bool = True) -> List[Tuple[int, float]]:
         """
         Running the clusterring for the dataset.
 
@@ -47,18 +47,22 @@ class K_means(object):
             if abs(change) < self.thereshold:                                       # If the change of mean vectors smaller than the thereshold
                 self.cluster = cluster                                              # Save the cluster
                 self.mean_vector = mean_vector_new                                  # Save the mean vector
-                print(f"Termination:\n---DBIs: {Count_DBI} \n---Num of data in each cluster: {[len(idxs) for idxs in self.cluster]}")    # Log
-                Count_DBI.append((count, self.DBI_calculate(cluster, mean_vector_new, data)))   # Calculate the last DBI
+                print(f"Termination: \n\
+                        ---DBIs: {Count_DBI} \n\
+                        ---Num of data in each cluster: {[len(idxs) for idxs in self.cluster]}")    # Log
+                if DBI_calculate:
+                    Count_DBI.append((count, self.DBI_calculate(cluster, mean_vector_new, data)))   # Calculate the last DBI
                 break                                                               # Terminate the while cycle
             else:        
                 mean_vector = mean_vector_new                                       # Update the mean vector
-                if count % 5 == 0:                                                 # Calculate DBI per 10 iteration
-                    DBI = self.DBI_calculate(cluster, mean_vector, data)            # Calculate DBI number
-                    Count_DBI.append((count, DBI))                                  # Save DBI data
-                    print(f"--------Iteration: {count}-----DBI: {DBI}--------")     # Log
-                count += 1                                                          # Update the iteration number
+                if count % 5 == 0:                                                  # Calculate DBI per 10 iteration
+                    if DBI_calculate:
+                        DBI = self.DBI_calculate(cluster, mean_vector, data)            # Calculate DBI number
+                        Count_DBI.append((count, DBI))                                  # Save DBI data
+                        print(f"--------Iteration: {count}-----DBI: {DBI}--------")     # Log
+                count += 1                                                              # Update the iteration number
         
-        return Count_DBI                                                            # Return the process log of train
+        return Count_DBI                                                                # Return the process log of train
 
     def DBI_calculate(self, cluster: List[List], mean_vector: np.array, data: np.array) -> float:
         """
