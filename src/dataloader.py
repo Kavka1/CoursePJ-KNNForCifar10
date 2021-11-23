@@ -18,7 +18,7 @@ class Dataloader(object):
         self.path = path + 'dataset/'           # Dataset path
 
         self._load_dataset()                    # Load the dataset from the file path
-        self._preprocess()
+        self._preprocess()                      # Preprocess the data
 
     def _load_dataset(self) -> None:
         """
